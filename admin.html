@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — De Bem com a Minha Grana</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green:#6B9E52; --green-dark:#4a7538; --green-light:#e8f2e2;
+  --dark:#1c2b18; --dark2:#2a3d24;
+  --caramel:#D4956A;
+  --bg:#f4f9f1; --surface:#fff; --border:rgba(107,158,82,0.2);
+  --text:#1c2b18; --muted:#5a6e54;
+  --red:#C0392B; --red-bg:#FDEEEC;
+  --amber:#B5670D; --amber-bg:#FEF3E2;
+  --radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+h1,h2,h3{font-family:'Roboto',sans-serif;}
+
+/* LOGIN */
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--dark);}
+.login-box{background:var(--surface);border-radius:20px;padding:40px 36px;width:100%;max-width:380px;border:1px solid var(--border);}
+.login-logo{text-align:center;margin-bottom:28px;}
+.login-logo h2{font-size:20px;font-weight:700;color:var(--dark);margin-bottom:4px;}
+.login-logo p{font-size:13px;color:var(--muted);}
+.login-logo .capy{font-size:40px;display:block;margin-bottom:10px;}
+.field{margin-bottom:16px;}
+.field label{font-size:13px;font-weight:500;color:var(--muted);display:block;margin-bottom:6px;}
+.field input{width:100%;border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-size:14px;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);outline:none;}
+.field input:focus{border-color:var(--green);}
+.btn-login{width:100%;background:var(--green);color:#fff;border:none;border-radius:40px;padding:14px;font-size:15px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:4px;transition:background .2s;}
+.btn-login:hover{background:var(--green-dark);}
+.login-error{font-size:13px;color:var(--red);text-align:center;margin-top:10px;display:none;}
+
+/* ADMIN LAYOUT */
+#admin-screen{display:none;}
+.admin-nav{background:var(--dark);padding:0 5%;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.admin-nav-logo{font-family:'Roboto',sans-serif;font-weight:700;font-size:16px;color:#fff;}
+.admin-nav-logo span{color:var(--caramel);}
+.admin-nav-right{display:flex;align-items:center;gap:16px;}
+.admin-badge{background:rgba(107,158,82,0.2);color:#9fd47e;font-size:12px;font-weight:500;padding:3px 12px;border-radius:20px;border:1px solid rgba(107,158,82,0.3);}
+.btn-logout{background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);border-radius:40px;padding:6px 16px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.btn-logout:hover{border-color:rgba(255,255,255,0.5);color:#fff;}
+
+.admin-body{max-width:1100px;margin:0 auto;padding:32px 5%;}
+
+/* CARDS RESUMO */
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
+.summary-card{background:var(--surface);border-radius:var(--radius);padding:20px 22px;border:1px solid var(--border);}
+.summary-card .label{font-size:12px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+.summary-card .value{font-family:'Roboto',sans-serif;font-size:28px;font-weight:700;color:var(--text);}
+.summary-card .value.green{color:var(--green-dark);}
+.summary-card .value.amber{color:var(--amber);}
+.summary-card .value.red{color:var(--red);}
+.summary-card .sub{font-size:12px;color:var(--muted);margin-top:4px;}
+
+/* TABELA */
+.table-wrap{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;margin-bottom:24px;}
+.table-header{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.table-title{font-family:'Roboto',sans-serif;font-size:16px;font-weight:700;color:var(--text);}
+.table-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.search-input{border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);outline:none;width:220px;}
+.search-input:focus{border-color:var(--green);}
+.btn-export{background:var(--green-light);color:var(--green-dark);border:1px solid rgba(107,158,82,0.3);border-radius:8px;padding:8px 16px;font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background .2s;}
+.btn-export:hover{background:#d4ebcc;}
+.btn-refresh{background:transparent;border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:13px;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;transition:all .2s;}
+.btn-refresh:hover{border-color:var(--green);color:var(--green);}
+
+table{width:100%;border-collapse:collapse;}
+thead tr{background:var(--bg);}
+th{text-align:left;padding:11px 16px;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border);}
+td{padding:13px 16px;font-size:14px;border-bottom:1px solid var(--border);color:var(--text);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--bg);}
+.td-email{color:var(--muted);font-size:13px;}
+.td-date{color:var(--muted);font-size:13px;}
+
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap;}
+.pill.ativo{background:#e8f2e2;color:#3B6D11;}
+.pill.inativo{background:var(--red-bg);color:var(--red);}
+.pill.mensal{background:#FAEEDA;color:#854F0B;}
+.pill.anual{background:#EEEDFE;color:#3C3489;}
+.pill.pendente{background:var(--amber-bg);color:var(--amber);}
+
+.empty-state{padding:48px;text-align:center;color:var(--muted);font-size:14px;}
+
+/* FILTROS */
+.filter-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;}
+.filter-tab{padding:7px 16px;border-radius:40px;font-size:13px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.filter-tab.active,.filter-tab:hover{background:var(--green);border-color:var(--green);color:#fff;}
+
+/* LOADING */
+.loading{padding:48px;text-align:center;color:var(--muted);}
+.spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:700px){
+  .summary-grid{grid-template-columns:1fr 1fr;}
+  .search-input{width:100%;}
+  table{font-size:13px;}
+  th,td{padding:10px 12px;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <span class="capy">🐾</span>
+      <h2>De Bem com a Minha <span style="color:var(--caramel)">Grana</span></h2>
+      <p>Painel administrativo</p>
+    </div>
+    <div class="field">
+      <label>Senha de acesso</label>
+      <input type="password" id="admin-senha" placeholder="••••••••" onkeydown="if(event.key==='Enter')entrar()">
+    </div>
+    <button class="btn-login" onclick="entrar()">Entrar no painel</button>
+    <div class="login-error" id="login-error">Senha incorreta.</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen">
+  <nav class="admin-nav">
+    <div class="admin-nav-logo">De Bem com a Minha <span>Grana</span></div>
+    <div class="admin-nav-right">
+      <span class="admin-badge">Admin</span>
+      <button class="btn-logout" onclick="sair()">Sair</button>
+    </div>
+  </nav>
+
+  <div class="admin-body">
+
+    <!-- RESUMO -->
+    <div class="summary-grid" id="summary-grid">
+      <div class="summary-card"><div class="label">Total de usuários</div><div class="value" id="s-total">—</div><div class="sub">cadastros</div></div>
+      <div class="summary-card"><div class="label">Ativos (pagos)</div><div class="value green" id="s-ativos">—</div><div class="sub">com assinatura ativa</div></div>
+      <div class="summary-card"><div class="label">Inativos</div><div class="value red" id="s-inativos">—</div><div class="sub">sem assinatura</div></div>
+      <div class="summary-card"><div class="label">Receita estimada</div><div class="value amber" id="s-mrr">—</div><div class="sub">MRR (R$19,90/ativo)</div></div>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filtrar('todos',this)">Todos</button>
+      <button class="filter-tab" onclick="filtrar('ativos',this)">Ativos</button>
+      <button class="filter-tab" onclick="filtrar('inativos',this)">Inativos</button>
+      <button class="filter-tab" onclick="filtrar('mensal',this)">Plano mensal</button>
+      <button class="filter-tab" onclick="filtrar('anual',this)">Plano anual</button>
+    </div>
+
+    <!-- TABELA -->
+    <div class="table-wrap">
+      <div class="table-header">
+        <div class="table-title">Usuários cadastrados</div>
+        <div class="table-actions">
+          <input class="search-input" type="text" placeholder="Buscar por nome ou email..." oninput="buscar(this.value)" id="search-input">
+          <button class="btn-refresh" onclick="carregarUsuarios()">↺ Atualizar</button>
+          <button class="btn-export" onclick="exportarCSV()">⬇ Exportar CSV</button>
+        </div>
+      </div>
+      <div id="table-body">
+        <div class="loading"><div class="spinner"></div>Carregando usuários...</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const SUPA = supabase.createClient(
+  'https://yddczdfgejmbqbqmcaus.supabase.co',
+  'sb_publishable_Y0QOr5VDhp_4j4rgCt2RIA_xYF2tKTI'
+);
+
+// ⚠️ TROQUE ESSA SENHA antes de publicar!
+const ADMIN_SENHA = 'grana@admin2026';
+
+let todosUsuarios = [];
+let filtroAtual = 'todos';
+let buscaAtual = '';
+
+function entrar() {
+  const senha = document.getElementById('admin-senha').value;
+  if (senha === ADMIN_SENHA) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    carregarUsuarios();
+  } else {
+    const err = document.getElementById('login-error');
+    err.style.display = 'block';
+    setTimeout(() => err.style.display = 'none', 3000);
+  }
+}
+
+function sair() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('admin-senha').value = '';
+}
+
+async function carregarUsuarios() {
+  document.getElementById('table-body').innerHTML = '<div class="loading"><div class="spinner"></div>Carregando usuários...</div>';
+  const { data, error } = await SUPA
+    .from('usuarios')
+    .select('id, email, nome, created_at, dados')
+    .order('created_at', { ascending: false });
+
+  if (error || !data) {
+    document.getElementById('table-body').innerHTML = '<div class="empty-state">Erro ao carregar dados. Verifique as permissões do Supabase.</div>';
+    return;
+  }
+
+  // Mapear dados — adapta quando tiver campo assinatura no banco
+  todosUsuarios = data.map(u => ({
+    ...u,
+    assinatura_ativa: u.dados?.assinatura_ativa ?? false,
+    plano: u.dados?.plano ?? null,
+    assinatura_validade: u.dados?.assinatura_validade ?? null,
+  }));
+
+  atualizarResumo();
+  renderTabela();
+}
+
+function atualizarResumo() {
+  const total = todosUsuarios.length;
+  const ativos = todosUsuarios.filter(u => u.assinatura_ativa).length;
+  const inativos = total - ativos;
+  const mrr = ativos * 19.90;
+
+  document.getElementById('s-total').textContent = total;
+  document.getElementById('s-ativos').textContent = ativos;
+  document.getElementById('s-inativos').textContent = inativos;
+  document.getElementById('s-mrr').textContent = 'R$' + mrr.toFixed(2).replace('.', ',');
+}
+
+function filtrar(tipo, btn) {
+  filtroAtual = tipo;
+  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTabela();
+}
+
+function buscar(val) {
+  buscaAtual = val.toLowerCase();
+  renderTabela();
+}
+
+function renderTabela() {
+  let lista = [...todosUsuarios];
+
+  if (filtroAtual === 'ativos') lista = lista.filter(u => u.assinatura_ativa);
+  else if (filtroAtual === 'inativos') lista = lista.filter(u => !u.assinatura_ativa);
+  else if (filtroAtual === 'mensal') lista = lista.filter(u => u.plano === 'mensal');
+  else if (filtroAtual === 'anual') lista = lista.filter(u => u.plano === 'anual');
+
+  if (buscaAtual) {
+    lista = lista.filter(u =>
+      u.nome?.toLowerCase().includes(buscaAtual) ||
+      u.email?.toLowerCase().includes(buscaAtual)
+    );
+  }
+
+  if (lista.length === 0) {
+    document.getElementById('table-body').innerHTML = '<div class="empty-state">Nenhum usuário encontrado.</div>';
+    return;
+  }
+
+  const rows = lista.map(u => {
+    const data = u.created_at ? new Date(u.created_at).toLocaleDateString('pt-BR') : '—';
+    const validade = u.assinatura_validade ? new Date(u.assinatura_validade).toLocaleDateString('pt-BR') : '—';
+    const statusPill = u.assinatura_ativa
+      ? '<span class="pill ativo">✓ Ativo</span>'
+      : '<span class="pill inativo">✗ Inativo</span>';
+    const planoPill = u.plano === 'anual'
+      ? '<span class="pill anual">Anual</span>'
+      : u.plano === 'mensal'
+      ? '<span class="pill mensal">Mensal</span>'
+      : '<span class="pill pendente">—</span>';
+
+    return `<tr>
+      <td><strong>${esc(u.nome || '—')}</strong></td>
+      <td class="td-email">${esc(u.email)}</td>
+      <td>${statusPill}</td>
+      <td>${planoPill}</td>
+      <td class="td-date">${validade}</td>
+      <td class="td-date">${data}</td>
+    </tr>`;
+  }).join('');
+
+  document.getElementById('table-body').innerHTML = `
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>E-mail</th>
+          <th>Status</th>
+          <th>Plano</th>
+          <th>Vencimento</th>
+          <th>Cadastro</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
+function exportarCSV() {
+  const header = 'Nome,Email,Status,Plano,Vencimento,Cadastro\n';
+  const rows = todosUsuarios.map(u => {
+    const data = u.created_at ? new Date(u.created_at).toLocaleDateString('pt-BR') : '';
+    const validade = u.assinatura_validade ? new Date(u.assinatura_validade).toLocaleDateString('pt-BR') : '';
+    return `"${u.nome||''}","${u.email}","${u.assinatura_ativa?'Ativo':'Inativo'}","${u.plano||''}","${validade}","${data}"`;
+  }).join('\n');
+  const blob = new Blob(['\uFEFF' + header + rows], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url;
+  a.download = `usuarios_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+}
+
+function esc(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+</body>
+</html>
