@@ -742,6 +742,9 @@ function baixarCSV(content, filename) {
   a.href = url; a.download = filename; a.click();
   URL.revokeObjectURL(url);
 }
+
+// Verificar sessão ao carregar
+if(localStorage.getItem('admin_session')==='ok'){abrirAdmin();}
 </script>
 
 <!-- SQL PARA RODAR NO SUPABASE (cole no SQL Editor):
