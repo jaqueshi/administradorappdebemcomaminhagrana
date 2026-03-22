@@ -175,7 +175,8 @@ tr:hover td{background:var(--bg);}
       <span class="admin-badge">Admin</span>
       <button class="btn-logout" onclick="sair()">Sair</button>
     </div>
-  </nav>
+    <button onclick="sair()" style="margin-left:auto;background:rgba(255,255,255,0.15);border:none;color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit">Sair</button>
+</nav>
 
   <!-- TABS DE NAVEGAÇÃO -->
   <div class="admin-tabs">
@@ -411,14 +412,25 @@ function showAdminTab(id, btn) {
 }
 
 // ── LOGIN ──
+function abrirAdmin(){
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-screen').style.display = 'block';
+  carregarUsuarios();
+  carregarContatos();
+  carregarPesquisa();
+}
+
+function sair(){
+  localStorage.removeItem('admin_session');
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
 function entrar() {
   const senha = document.getElementById('admin-senha').value;
   if (senha === ADMIN_SENHA) {
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('admin-screen').style.display = 'block';
-    carregarUsuarios();
-    carregarContatos();
-    carregarPesquisa();
+    localStorage.setItem('admin_session', 'ok');
+    abrirAdmin();
   } else {
     const err = document.getElementById('login-error');
     err.style.display = 'block';
