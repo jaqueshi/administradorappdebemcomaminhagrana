@@ -132,11 +132,11 @@ tr:hover td{background:var(--bg);}
 .bar-count{width:28px;text-align:right;font-weight:600;color:var(--green-dark);}
 
 .pesq-form{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:24px;margin-bottom:24px;}
-.pesq-form h3{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--text);}
+.pesq-form h3{font-size:16px;font-weight:700;margin-bottom:20px;color:var(--text);}
+.radio-group{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
 .pesq-question{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:14px;}
 .pesq-question-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;display:flex;align-items:flex-start;gap:8px;}
 .pesq-question-num{background:var(--green);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px;}
-.radio-group{display:flex;flex-direction:column;gap:8px;}
 .radio-opt{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);cursor:pointer;padding:9px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);transition:all .15s;}
 .radio-opt:hover{border-color:var(--green);background:var(--green-light);}
 .radio-opt input[type=radio]{width:16px;height:16px;accent-color:var(--green);cursor:pointer;flex-shrink:0;}
@@ -180,6 +180,7 @@ tr:hover td{background:var(--bg);}
       <span class="admin-badge">Admin</span>
       <button class="btn-logout" onclick="sair()">Sair</button>
     </div>
+    <button onclick="sair()" style="margin-left:auto;background:rgba(255,255,255,0.15);border:none;color:#fff;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:600;font-family:inherit">Sair</button>
 </nav>
 
   <!-- TABS DE NAVEGAÇÃO -->
@@ -348,31 +349,44 @@ tr:hover td{background:var(--bg);}
           </div>
         </div>
 
-        <div class="form-field" style="margin-bottom:16px;">
-          <label>1. Hoje, como você controla seu dinheiro?</label>
+        <div class="pesq-question">
+          <div class="pesq-question-title">
+            <span class="pesq-question-num">1</span>
+            Hoje, como você controla seu dinheiro?
+          </div>
           <div class="radio-group">
-            <label class="radio-opt"><input type="radio" name="q1" value="nao-controlo"> Não controlo</label>
-            <label class="radio-opt"><input type="radio" name="q1" value="planilha"> Uso planilha</label>
-            <label class="radio-opt"><input type="radio" name="q1" value="aplicativo"> Uso aplicativo</label>
+            <label class="radio-opt"><input type="radio" name="q1" value="nao-controlo"><span>Não controlo</span></label>
+            <label class="radio-opt"><input type="radio" name="q1" value="planilha"><span>Uso planilha</span></label>
+            <label class="radio-opt"><input type="radio" name="q1" value="aplicativo"><span>Uso aplicativo</span></label>
           </div>
         </div>
 
-        <div class="form-field" style="margin-bottom:16px;">
-          <label>2. Qual sua maior dificuldade com dinheiro hoje?</label>
+        <div class="pesq-question">
+          <div class="pesq-question-title">
+            <span class="pesq-question-num">2</span>
+            Qual sua maior dificuldade com dinheiro hoje?
+          </div>
           <div class="radio-group">
-            <label class="radio-opt"><input type="radio" name="q2" value="gasto-mais"> Gasto mais do que deveria</label>
-            <label class="radio-opt"><input type="radio" name="q2" value="nao-sei-onde-vai"> Não sei pra onde vai meu dinheiro</label>
-            <label class="radio-opt"><input type="radio" name="q2" value="falta-organizacao"> Falta organização</label>
+            <label class="radio-opt"><input type="radio" name="q2" value="gasto-mais-que-ganho"><span>Gasto mais do que ganho</span></label>
+            <label class="radio-opt"><input type="radio" name="q2" value="nao-sei-onde-vai"><span>Não sei pra onde vai meu dinheiro</span></label>
+            <label class="radio-opt"><input type="radio" name="q2" value="esqueco-contas"><span>Esqueço de pagar contas</span></label>
+            <label class="radio-opt"><input type="radio" name="q2" value="dividas"><span>Tenho dívidas que não consigo quitar</span></label>
+            <label class="radio-opt"><input type="radio" name="q2" value="nao-consigo-guardar"><span>Não consigo guardar dinheiro</span></label>
+            <label class="radio-opt"><input type="radio" name="q2" value="planilha-app-nao-resolve"><span>Minha planilha/app não resolve tudo</span></label>
+            <label class="radio-opt"><input type="radio" name="q2" value="falta-disciplina"><span>Não tenho disciplina para controlar</span></label>
           </div>
         </div>
 
-        <div class="form-field" style="margin-bottom:20px;">
-          <label>3. Se existisse um app que organizasse suas finanças, te avisasse contas a vencer e mostrasse pra onde o dinheiro vai — quanto pagaria por mês?</label>
+        <div class="pesq-question">
+          <div class="pesq-question-title">
+            <span class="pesq-question-num">3</span>
+            Se existisse um app que organizasse suas finanças, te avisasse contas a vencer e mostrasse pra onde o dinheiro vai — quanto pagaria por mês?
+          </div>
           <div class="radio-group">
-            <label class="radio-opt"><input type="radio" name="q3" value="nao-pagaria"> Não pagaria</label>
-            <label class="radio-opt"><input type="radio" name="q3" value="ate-20"> Até R$ 20/mês</label>
-            <label class="radio-opt"><input type="radio" name="q3" value="ate-30"> Até R$ 30/mês</label>
-            <label class="radio-opt"><input type="radio" name="q3" value="ate-50"> Até R$ 50/mês</label>
+            <label class="radio-opt"><input type="radio" name="q3" value="nao-pagaria"><span>Não pagaria</span></label>
+            <label class="radio-opt"><input type="radio" name="q3" value="ate-20"><span>Até R$ 20/mês</span></label>
+            <label class="radio-opt"><input type="radio" name="q3" value="ate-30"><span>Até R$ 30/mês</span></label>
+            <label class="radio-opt"><input type="radio" name="q3" value="ate-50"><span>Até R$ 50/mês</span></label>
           </div>
         </div>
 
@@ -442,7 +456,11 @@ function entrar() {
   }
 }
 
-
+function sair() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('admin-senha').value = '';
+}
 
 // ════════════════════════
 // ABA USUÁRIOS
@@ -734,9 +752,6 @@ function baixarCSV(content, filename) {
   a.href = url; a.download = filename; a.click();
   URL.revokeObjectURL(url);
 }
-
-// Verificar sessão ao carregar
-if(localStorage.getItem('admin_session')==='ok'){abrirAdmin();}
 </script>
 
 <!-- SQL PARA RODAR NO SUPABASE (cole no SQL Editor):
