@@ -550,9 +550,19 @@ function renderTabela() {
     const validade = u.assinatura_validade ? new Date(u.assinatura_validade).toLocaleDateString('pt-BR') : '—';
     const statusPill = u.assinatura_ativa ? '<span class="pill ativo">✓ Ativo</span>' : '<span class="pill inativo">✗ Inativo</span>';
     const planoPill = u.plano === 'anual' ? '<span class="pill anual">Anual</span>' : u.plano === 'mensal' ? '<span class="pill mensal">Mensal</span>' : '<span class="pill pendente">—</span>';
-    return `<tr><td><strong>${esc(u.nome||'—')}</strong></td><td class="td-email">${esc(u.email)}</td><td>${statusPill}</td><td>${planoPill}</td><td class="td-date">${validade}</td><td class="td-date">${data}</td></tr>`;
+    return `<tr>
+      <td><strong>${esc(u.nome||'—')}</strong></td>
+      <td class="td-email">${esc(u.email)}</td>
+      <td>${statusPill}</td>
+      <td>${planoPill}</td>
+      <td class="td-date">${validade}</td>
+      <td class="td-date">${data}</td>
+      <td style="text-align:center">
+        <button onclick="confirmarExcluirUsuario('${u.id}','${esc(u.nome||u.email)}')" style="background:none;border:none;cursor:pointer;color:var(--red);font-size:16px;padding:4px 8px;border-radius:6px;transition:background .15s" title="Excluir usuário" onmouseover="this.style.background='#FDEEEC'" onmouseout="this.style.background='none'">🗑</button>
+      </td>
+    </tr>`;
   }).join('');
-  document.getElementById('table-body').innerHTML = `<table><thead><tr><th>Nome</th><th>E-mail</th><th>Status</th><th>Plano</th><th>Vencimento</th><th>Cadastro</th></tr></thead><tbody>${rows}</tbody></table>`;
+  document.getElementById('table-body').innerHTML = `<table><thead><tr><th>Nome</th><th>E-mail</th><th>Status</th><th>Plano</th><th>Vencimento</th><th>Cadastro</th><th>Ação</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 function exportarCSV() {
@@ -563,6 +573,23 @@ function exportarCSV() {
     return `"${u.nome||''}","${u.email}","${u.assinatura_ativa?'Ativo':'Inativo'}","${u.plano||''}","${validade}","${data}"`;
   }).join('\n');
   baixarCSV('\uFEFF' + header + rows, `usuarios_${hoje()}.csv`);
+}
+
+function confirmarExcluirUsuario(id, nome) {
+  if(!confirm(`⚠️ Excluir o usuário "${nome}"?\n\nEsta ação é permanente e apaga todos os dados do usuário.`)) return;
+  excluirUsuario(id, nome);
+}
+
+async function excluirUsuario(id, nome) {
+  const { error } = await SUPA.from('usuarios').delete().eq('id', id);
+  if(error){
+    alert('Erro ao excluir usuário: ' + error.message);
+    return;
+  }
+  todosUsuarios = todosUsuarios.filter(u => u.id !== id);
+  atualizarResumo();
+  renderTabela();
+  alert(`✅ Usuário "${nome}" excluído com sucesso.`);
 }
 
 // ════════════════════════
