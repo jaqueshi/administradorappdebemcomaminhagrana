@@ -557,12 +557,26 @@ function renderTabela() {
       <td>${planoPill}</td>
       <td class="td-date">${validade}</td>
       <td class="td-date">${data}</td>
-      <td style="text-align:center">
-        <button onclick="confirmarExcluirUsuario('${u.id}','${esc(u.nome||u.email)}')" style="background:none;border:none;cursor:pointer;color:var(--red);font-size:16px;padding:4px 8px;border-radius:6px;transition:background .15s" title="Excluir usuário" onmouseover="this.style.background='#FDEEEC'" onmouseout="this.style.background='none'">🗑</button>
+      <td style="text-align:center; display:flex; gap:6px; justify-content:center; align-items:center;">
+
+        <button onclick="reenviarEmail('${esc(u.email)}')"
+          style="background:#e8f2e2;border:none;cursor:pointer;color:#3B6D11;font-size:12px;padding:6px 10px;border-radius:6px;"
+          title="Reenviar acesso">
+          ✉️ Reenviar
+        </button>
+
+        <button onclick="confirmarExcluirUsuario('${u.id}','${esc(u.nome||u.email)}')"
+          style="background:none;border:none;cursor:pointer;color:var(--red);font-size:16px;padding:4px 8px;border-radius:6px;transition:background .15s"
+          title="Excluir usuário"
+          onmouseover="this.style.background='#FDEEEC'"
+          onmouseout="this.style.background='none'">
+          🗑
+        </button>
+
       </td>
     </tr>`;
   }).join('');
-  document.getElementById('table-body').innerHTML = `<table><thead><tr><th>Nome</th><th>E-mail</th><th>Status</th><th>Plano</th><th>Vencimento</th><th>Cadastro</th><th>Ação</th></tr></thead><tbody>${rows}</tbody></table>`;
+  document.getElementById('table-body').innerHTML = `<table><thead><tr><th>Nome</th><th>E-mail</th><th>Status</th><th>Plano</th><th>Vencimento</th><th>Cadastro</th><th>Ações</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 function exportarCSV() {
@@ -809,6 +823,7 @@ function exportarPesquisa() {
   baixarCSV('\uFEFF' + header + rows, `pesquisa_${hoje()}.csv`);
 }
 
+
 async function reenviarEmail(email) {
   if (!email) {
     alert("E-mail inválido.");
@@ -821,8 +836,7 @@ async function reenviarEmail(email) {
     const res = await fetch("https://yddczdfgejmbqbqmcaus.supabase.co/functions/v1/reenviar-email", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlkZGN6ZGZnZWptYnFicW1jYXVzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzA4MjIsImV4cCI6MjA4OTUwNjgyMn0.LIzK1fW3KReV7qgLjsrxs9WAdimC4PimyyWokIiWA1Q"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({ email })
     });
@@ -839,6 +853,7 @@ async function reenviarEmail(email) {
     alert("Erro ao conectar com o servidor.");
   }
 }
+
 // ── UTILS ──
 function esc(str) { return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function hoje() { return new Date().toISOString().slice(0,10); }
