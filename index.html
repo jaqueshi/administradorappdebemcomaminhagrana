@@ -557,12 +557,26 @@ function renderTabela() {
       <td>${planoPill}</td>
       <td class="td-date">${validade}</td>
       <td class="td-date">${data}</td>
-      <td style="text-align:center">
-        <button onclick="confirmarExcluirUsuario('${u.id}','${esc(u.nome||u.email)}')" style="background:none;border:none;cursor:pointer;color:var(--red);font-size:16px;padding:4px 8px;border-radius:6px;transition:background .15s" title="Excluir usuário" onmouseover="this.style.background='#FDEEEC'" onmouseout="this.style.background='none'">🗑</button>
+      <td style="text-align:center; display:flex; gap:6px; justify-content:center; align-items:center;">
+
+        <button onclick="reenviarEmail('${esc(u.email)}')"
+          style="background:#e8f2e2;border:none;cursor:pointer;color:#3B6D11;font-size:12px;padding:6px 10px;border-radius:6px;"
+          title="Reenviar acesso">
+          ✉️ Reenviar
+        </button>
+
+        <button onclick="confirmarExcluirUsuario('${u.id}','${esc(u.nome||u.email)}')"
+          style="background:none;border:none;cursor:pointer;color:var(--red);font-size:16px;padding:4px 8px;border-radius:6px;transition:background .15s"
+          title="Excluir usuário"
+          onmouseover="this.style.background='#FDEEEC'"
+          onmouseout="this.style.background='none'">
+          🗑
+        </button>
+
       </td>
     </tr>`;
   }).join('');
-  document.getElementById('table-body').innerHTML = `<table><thead><tr><th>Nome</th><th>E-mail</th><th>Status</th><th>Plano</th><th>Vencimento</th><th>Cadastro</th><th>Ação</th></tr></thead><tbody>${rows}</tbody></table>`;
+  document.getElementById('table-body').innerHTML = `<table><thead><tr><th>Nome</th><th>E-mail</th><th>Status</th><th>Plano</th><th>Vencimento</th><th>Cadastro</th><th>Ações</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 
 function exportarCSV() {
@@ -807,6 +821,37 @@ function exportarPesquisa() {
     return `"${r.nome||''}","${r.idade||''}","${Q1_OPTS[r.q1]||r.q1||''}","${Q2_OPTS[r.q2]||r.q2||''}","${Q3_OPTS[r.q3]||r.q3||''}","${(r.obs||'').replace(/"/g,'""')}","${data}"`;
   }).join('\n');
   baixarCSV('\uFEFF' + header + rows, `pesquisa_${hoje()}.csv`);
+}
+
+
+async function reenviarEmail(email) {
+  if (!email) {
+    alert("E-mail inválido.");
+    return;
+  }
+
+  if (!confirm("Reenviar acesso para " + email + "?")) return;
+
+  try {
+    const res = await fetch("https://yddczdfgejmbqbqmcaus.supabase.co/functions/v1/reenviar-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      alert("✅ E-mail reenviado com sucesso!");
+    } else {
+      alert("❌ Erro: " + (data.erro || "não foi possível reenviar."));
+    }
+
+  } catch (err) {
+    alert("Erro ao conectar com o servidor.");
+  }
 }
 
 // ── UTILS ──
