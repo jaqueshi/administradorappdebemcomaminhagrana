@@ -1113,8 +1113,8 @@ function carregarMetas() {
   if (saved.leads)      document.getElementById('meta-leads').value = saved.leads;
   if (saved.taxa)       document.getElementById('meta-taxa').value = saved.taxa;
 
-  // pull live data from already-loaded globals
-  const ativos = todosUsuarios.filter(u => u.status === 'ativo').length;
+  // pull live data from already-loaded globals (mesmo critério da aba Usuários)
+  const ativos = todosUsuarios.filter(u => u.assinatura_ativa).length;
   const mrr    = ativos * 19.9;
   const leads  = todosContatos.length;
   const taxa   = leads > 0 ? ((ativos / leads) * 100).toFixed(1) : '0';
