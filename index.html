@@ -151,11 +151,58 @@ tr:hover td{background:var(--bg);}
 .radio-opt input[type=radio]{width:16px;height:16px;accent-color:var(--green);cursor:pointer;flex-shrink:0;}
 .radio-opt span{flex:1;}
 
+/* METAS */
+.metas-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+.meta-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:20px 22px;position:relative;overflow:hidden;}
+.meta-card .label{font-size:12px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;}
+.meta-card .value{font-family:'Roboto',sans-serif;font-size:26px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.meta-card .sub{font-size:12px;color:var(--muted);}
+.meta-card .progress-bar{height:5px;background:var(--bg);border-radius:4px;margin-top:12px;overflow:hidden;}
+.meta-card .progress-fill{height:100%;border-radius:4px;background:var(--green);transition:width .6s ease;}
+.meta-card .progress-pct{font-size:11px;color:var(--muted);margin-top:5px;text-align:right;}
+.funil-wrap{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:24px;margin-bottom:24px;}
+.funil-wrap h3{font-family:'Roboto',sans-serif;font-size:16px;font-weight:700;margin-bottom:20px;color:var(--text);}
+.funil-etapa{display:flex;align-items:center;gap:16px;margin-bottom:10px;}
+.funil-nome{width:160px;font-size:13px;font-weight:500;color:var(--text);}
+.funil-bar-bg{flex:1;height:28px;background:var(--bg);border-radius:6px;overflow:hidden;position:relative;}
+.funil-bar-fill{height:100%;border-radius:6px;background:var(--green);opacity:.85;transition:width .6s ease;}
+.funil-bar-label{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;font-weight:600;color:#fff;white-space:nowrap;}
+.funil-meta{width:80px;text-align:right;font-size:12px;color:var(--muted);}
+.scripts-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+.script-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:20px;}
+.script-card h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.script-card .perfil-tag{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:12px;}
+.script-card .script-body{font-size:13px;color:var(--muted);line-height:1.7;border-left:3px solid var(--green);padding-left:12px;background:var(--bg);padding:10px 14px;border-radius:0 8px 8px 0;}
+.objections-wrap{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);padding:24px;margin-bottom:24px;}
+.objections-wrap h3{font-family:'Roboto',sans-serif;font-size:16px;font-weight:700;margin-bottom:16px;color:var(--text);}
+.objection-row{padding:14px 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.objection-row:last-child{border-bottom:none;}
+.obj-q{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.obj-q-label{font-size:11px;color:var(--amber);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
+.obj-a{font-size:13px;color:var(--muted);line-height:1.6;}
+.obj-a-label{font-size:11px;color:var(--green);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
+.icps-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:24px;}
+.icp-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);border-left:4px solid var(--green);padding:16px 18px;}
+.icp-card h4{font-size:14px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.icp-card p{font-size:13px;color:var(--muted);line-height:1.6;}
+.icp-card .icp-dica{margin-top:10px;font-size:12px;font-weight:600;color:var(--green-dark);background:var(--green-light);padding:6px 10px;border-radius:6px;}
+
+/* editable metas */
+.meta-input-wrap{margin-top:8px;}
+.meta-input-wrap input{width:100%;border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:14px;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);outline:none;text-align:center;font-weight:700;}
+.meta-input-wrap input:focus{border-color:var(--green);}
+.btn-salvar-metas{background:var(--green);color:#fff;border:none;border-radius:8px;padding:10px 22px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s;margin-top:8px;}
+.btn-salvar-metas:hover{background:var(--green-dark);}
+
 @media(max-width:700px){
   .summary-grid{grid-template-columns:1fr 1fr;}
+  .metas-grid{grid-template-columns:1fr 1fr;}
   .crm-grid{grid-template-columns:1fr;}
   .pesq-stats{grid-template-columns:1fr;}
   .form-row{grid-template-columns:1fr;}
+  .scripts-wrap{grid-template-columns:1fr;}
+  .objection-row{grid-template-columns:1fr;}
+  .icps-grid{grid-template-columns:1fr;}
   .search-input{width:100%;}
   table{font-size:13px;}
   th,td{padding:10px 12px;}
@@ -197,6 +244,7 @@ tr:hover td{background:var(--bg);}
     <button class="admin-tab active" onclick="showAdminTab('usuarios',this)">👥 Usuários</button>
     <button class="admin-tab" onclick="showAdminTab('crm',this)">📋 CRM</button>
     <button class="admin-tab" onclick="showAdminTab('pesquisa',this)">📊 Pesquisa de Mercado</button>
+    <button class="admin-tab" onclick="showAdminTab('metas',this)">🎯 Metas de Vendas</button>
   </div>
 
   <!-- ── ABA USUÁRIOS ── -->
@@ -442,6 +490,169 @@ tr:hover td{background:var(--bg);}
       </div>
     </div>
   </div>
+
+  <!-- ── ABA METAS DE VENDAS ── -->
+  <div class="tab-panel" id="panel-metas">
+    <div class="admin-body">
+
+      <!-- Cards de metas editáveis -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+        <div>
+          <div style="font-family:'Roboto',sans-serif;font-size:18px;font-weight:700;color:var(--text);">Metas do time</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:2px;">Atualize as metas e acompanhe o progresso em tempo real</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button class="btn-salvar-metas" onclick="salvarMetas()">💾 Salvar metas</button>
+          <span id="metas-ok" style="display:none;font-size:13px;color:var(--green);">✅ Salvo!</span>
+        </div>
+      </div>
+
+      <div class="metas-grid" id="metas-cards">
+        <div class="meta-card">
+          <div class="label">Meta de assinantes</div>
+          <div class="value green" id="mv-assinantes">—</div>
+          <div class="sub">atual (ativos no painel)</div>
+          <div class="meta-input-wrap">
+            <input type="number" id="meta-assinantes" placeholder="ex: 200" min="1">
+          </div>
+          <div class="progress-bar"><div class="progress-fill" id="prog-assinantes" style="width:0%"></div></div>
+          <div class="progress-pct" id="pct-assinantes">0%</div>
+        </div>
+        <div class="meta-card">
+          <div class="label">MRR atual</div>
+          <div class="value amber" id="mv-mrr">—</div>
+          <div class="sub">R$19,90 × ativos</div>
+          <div class="meta-input-wrap">
+            <input type="number" id="meta-mrr" placeholder="ex: 3980" min="1">
+          </div>
+          <div class="progress-bar"><div class="progress-fill" id="prog-mrr" style="width:0%"></div></div>
+          <div class="progress-pct" id="pct-mrr">0%</div>
+        </div>
+        <div class="meta-card">
+          <div class="label">Leads no CRM</div>
+          <div class="value" id="mv-leads">—</div>
+          <div class="sub">total de contatos</div>
+          <div class="meta-input-wrap">
+            <input type="number" id="meta-leads" placeholder="ex: 500" min="1">
+          </div>
+          <div class="progress-bar"><div class="progress-fill" id="prog-leads" style="width:0%"></div></div>
+          <div class="progress-pct" id="pct-leads">0%</div>
+        </div>
+        <div class="meta-card">
+          <div class="label">Taxa de conversão</div>
+          <div class="value" id="mv-taxa">—</div>
+          <div class="sub">clientes ÷ leads</div>
+          <div class="meta-input-wrap">
+            <input type="number" id="meta-taxa" placeholder="ex: 5" min="1" max="100">
+          </div>
+          <div class="progress-bar"><div class="progress-fill" id="prog-taxa" style="width:0%"></div></div>
+          <div class="progress-pct" id="pct-taxa">0%</div>
+        </div>
+      </div>
+
+      <!-- Funil de vendas -->
+      <div class="funil-wrap">
+        <h3>🔽 Funil de vendas — etapas</h3>
+        <div id="funil-etapas">
+          <!-- gerado por JS -->
+        </div>
+      </div>
+
+      <!-- Perfis de cliente ideal -->
+      <div style="font-family:'Roboto',sans-serif;font-size:16px;font-weight:700;margin-bottom:14px;color:var(--text);">👤 Perfis de cliente ideal (ICP)</div>
+      <div class="icps-grid">
+        <div class="icp-card" style="border-left-color:#C0392B;">
+          <h4>😰 Endividado</h4>
+          <p>Tem dívida no cartão ou empréstimo. Sente que os juros não param de crescer. Quer enxergar o tamanho real do problema.</p>
+          <div class="icp-dica">💬 Foco: calculadora de dívidas com juros automático</div>
+        </div>
+        <div class="icp-card" style="border-left-color:#1a5fa8;">
+          <h4>🤔 Perdido no fim do mês</h4>
+          <p>Ganha bem mas não sabe pra onde vai o dinheiro. Já tentou anotar em caderninho ou app gratuito e parou.</p>
+          <div class="icp-dica">💬 Foco: gráficos e alertas de orçamento</div>
+        </div>
+        <div class="icp-card" style="border-left-color:#6B9E52;">
+          <h4>📊 Ex-usuário de planilha</h4>
+          <p>Sabe que precisa controlar, já tentou com Excel, mas abandonou. Quer algo mais prático e visual.</p>
+          <div class="icp-dica">💬 Foco: importação CSV/Excel em segundos</div>
+        </div>
+        <div class="icp-card" style="border-left-color:#7F77DD;">
+          <h4>🎯 Planejador de metas</h4>
+          <p>Quer guardar pra viagem, celular novo ou reserva de emergência. Precisa acompanhar o progresso.</p>
+          <div class="icp-dica">💬 Foco: metas com data limite e progresso visual</div>
+        </div>
+      </div>
+
+      <!-- Scripts de abordagem -->
+      <div style="font-family:'Roboto',sans-serif;font-size:16px;font-weight:700;margin-bottom:14px;color:var(--text);">💬 Scripts de abordagem</div>
+      <div class="scripts-wrap">
+        <div class="script-card">
+          <div class="perfil-tag" style="background:#FDEEEC;color:#C0392B;">Endividado</div>
+          <div class="script-body">"Oi [nome]! Percebi que você falou sobre dívidas outro dia. Eu uso um app chamado <strong>De Bem com a Minha Grana</strong> que me ajudou a enxergar exatamente quanto devo e quanto cada dívida tá me custando de juros todo mês. Sem precisar vincular banco, sem complicação. Quer que eu te mostre como funciona?"</div>
+        </div>
+        <div class="script-card">
+          <div class="perfil-tag" style="background:#EBF3FF;color:#1a5fa8;">Sem controle</div>
+          <div class="script-body">"Oi [nome]! Você já tentou controlar seus gastos mas nunca consegue manter? Eu entendo. Tem um app que eu uso que é <strong>R$19,90 por mês</strong> e você lança tudo pelo celular em segundos. Ele te avisa antes de você estourar o orçamento. Posso te mostrar?"</div>
+        </div>
+        <div class="script-card">
+          <div class="perfil-tag" style="background:#e8f2e2;color:#3B6D11;">Usa planilha</div>
+          <div class="script-body">"Ei [nome]! Você ainda usa planilha pra controlar as finanças? Tem um app que importa tudo do seu Excel em 12 segundos e já vira gráfico automático. Acessa do celular, tablet, qualquer lugar. Chama <strong>De Bem com a Minha Grana</strong> — mando o link pra você testar?"</div>
+        </div>
+        <div class="script-card">
+          <div class="perfil-tag" style="background:#FEF3E2;color:#B5670D;">Objeção de preço</div>
+          <div class="script-body">"Entendo! Mas pensa assim: R$19,90 por mês são menos de R$0,70 por dia. E se você economizar só R$50 por mês nos gastos que você nem sabia que fazia — que é o que a maioria descobre no primeiro mês — o app se paga mais de 2 vezes. E se não gostar, cancela sem burocracia."</div>
+        </div>
+      </div>
+
+      <!-- Objeções -->
+      <div class="objections-wrap">
+        <h3>🛡️ Objeções comuns e como responder</h3>
+        <div class="objection-row">
+          <div>
+            <div class="obj-q-label">Objeção</div>
+            <div class="obj-q">"Precisa vincular meu banco? Não confio."</div>
+          </div>
+          <div>
+            <div class="obj-a-label">Resposta</div>
+            <div class="obj-a">Não precisa de banco nenhum. É 100% manual — você lança o que quiser. Seus dados ficam armazenados com segurança na nuvem e não são compartilhados com ninguém.</div>
+          </div>
+        </div>
+        <div class="objection-row">
+          <div>
+            <div class="obj-q-label">Objeção</div>
+            <div class="obj-q">"Já tenho uma planilha gratuita."</div>
+          </div>
+          <div>
+            <div class="obj-a-label">Resposta</div>
+            <div class="obj-a">Planilha não tem alertas automáticos, não calcula juros de dívidas e não fica no celular do mesmo jeito. Quantas vezes você já abandonou a planilha? Esse app foi feito exatamente pra você não abandonar.</div>
+          </div>
+        </div>
+        <div class="objection-row">
+          <div>
+            <div class="obj-q-label">Objeção</div>
+            <div class="obj-q">"E se eu quiser cancelar?"</div>
+          </div>
+          <div>
+            <div class="obj-a-label">Resposta</div>
+            <div class="obj-a">No plano mensal você cancela quando quiser, sem burocracia. Começa pelo mensal se quiser testar sem compromisso — só R$19,90 e você já tem tudo incluso.</div>
+          </div>
+        </div>
+        <div class="objection-row">
+          <div>
+            <div class="obj-q-label">Objeção</div>
+            <div class="obj-q">"É um app? Precisa instalar pela loja?"</div>
+          </div>
+          <div>
+            <div class="obj-a-label">Resposta</div>
+            <div class="obj-a">Não precisa de Play Store nem App Store. Você abre pelo navegador e clica em "Adicionar à tela inicial" — vira ícone no celular igual a um app normal, em qualquer dispositivo.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
 </div>
 
 <script>
@@ -462,6 +673,7 @@ function showAdminTab(id, btn) {
   if (id === 'usuarios') carregarUsuarios();
   if (id === 'crm') carregarContatos();
   if (id === 'pesquisa') { carregarPesquisa(); }
+  if (id === 'metas') carregarMetas();
 }
 
 // ── LOGIN ──
@@ -852,6 +1064,99 @@ async function reenviarEmail(email) {
   } catch (err) {
     alert("Erro ao conectar com o servidor.");
   }
+}
+
+// ── METAS ──
+const FUNIL_ETAPAS = [
+  { nome: 'Leads prospectados', cor: '#6B9E52', meta: 100 },
+  { nome: 'Abordagens feitas',  cor: '#4a7538', meta: 60 },
+  { nome: 'Demos realizadas',   cor: '#D4956A', meta: 25 },
+  { nome: 'Propostas enviadas', cor: '#B5670D', meta: 15 },
+  { nome: 'Conversões (vendas)',cor: '#1a5fa8', meta: 5  },
+];
+
+function renderFunil(ativos, leads) {
+  const etapas = JSON.parse(localStorage.getItem('funil_metas') || 'null') || FUNIL_ETAPAS;
+  // inject real data into first and last
+  if (leads > 0) etapas[0].meta = leads;
+  const maxVal = Math.max(...etapas.map(e => e.meta), 1);
+  const wrap = document.getElementById('funil-etapas');
+  if (!wrap) return;
+  wrap.innerHTML = etapas.map((e, i) => {
+    const pct = Math.min(100, Math.round((e.meta / maxVal) * 100));
+    return `<div class="funil-etapa">
+      <div class="funil-nome">${e.nome}</div>
+      <div class="funil-bar-bg">
+        <div class="funil-bar-fill" style="width:${pct}%;background:${e.cor};"></div>
+        <span class="funil-bar-label">${e.meta}</span>
+      </div>
+      <div class="funil-meta">
+        <input type="number" value="${e.meta}" min="0"
+          style="width:60px;border:1px solid var(--border);border-radius:6px;padding:4px 6px;font-size:12px;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);text-align:center;"
+          onchange="atualizarFunil(${i}, this.value)">
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function atualizarFunil(idx, val) {
+  const etapas = JSON.parse(localStorage.getItem('funil_metas') || 'null') || [...FUNIL_ETAPAS];
+  etapas[idx].meta = parseInt(val) || 0;
+  localStorage.setItem('funil_metas', JSON.stringify(etapas));
+  renderFunil(0, 0);
+}
+
+function carregarMetas() {
+  const saved = JSON.parse(localStorage.getItem('metas_capivara') || '{}');
+  if (saved.assinantes) document.getElementById('meta-assinantes').value = saved.assinantes;
+  if (saved.mrr)        document.getElementById('meta-mrr').value = saved.mrr;
+  if (saved.leads)      document.getElementById('meta-leads').value = saved.leads;
+  if (saved.taxa)       document.getElementById('meta-taxa').value = saved.taxa;
+
+  // pull live data from already-loaded globals
+  const ativos = todosUsuarios.filter(u => u.status === 'ativo').length;
+  const mrr    = ativos * 19.9;
+  const leads  = todosContatos.length;
+  const taxa   = leads > 0 ? ((ativos / leads) * 100).toFixed(1) : '0';
+
+  document.getElementById('mv-assinantes').textContent = ativos;
+  document.getElementById('mv-mrr').textContent        = 'R$' + mrr.toFixed(2).replace('.',',');
+  document.getElementById('mv-leads').textContent      = leads;
+  document.getElementById('mv-taxa').textContent       = taxa + '%';
+
+  atualizarBarras(ativos, mrr, leads, parseFloat(taxa));
+  renderFunil(ativos, leads);
+}
+
+function atualizarBarras(ativos, mrr, leads, taxa) {
+  const mA = parseInt(document.getElementById('meta-assinantes').value) || 1;
+  const mM = parseInt(document.getElementById('meta-mrr').value) || 1;
+  const mL = parseInt(document.getElementById('meta-leads').value) || 1;
+  const mT = parseInt(document.getElementById('meta-taxa').value) || 1;
+
+  function setBar(id, pct) {
+    const p = Math.min(100, Math.round(pct));
+    document.getElementById('prog-' + id).style.width = p + '%';
+    document.getElementById('pct-' + id).textContent = p + '%';
+  }
+  setBar('assinantes', (ativos / mA) * 100);
+  setBar('mrr',        (mrr    / mM) * 100);
+  setBar('leads',      (leads  / mL) * 100);
+  setBar('taxa',       (taxa   / mT) * 100);
+}
+
+function salvarMetas() {
+  const obj = {
+    assinantes: document.getElementById('meta-assinantes').value,
+    mrr:        document.getElementById('meta-mrr').value,
+    leads:      document.getElementById('meta-leads').value,
+    taxa:       document.getElementById('meta-taxa').value,
+  };
+  localStorage.setItem('metas_capivara', JSON.stringify(obj));
+  carregarMetas();
+  const ok = document.getElementById('metas-ok');
+  ok.style.display = 'inline';
+  setTimeout(() => ok.style.display = 'none', 2000);
 }
 
 // ── UTILS ──
